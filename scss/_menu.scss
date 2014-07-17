@@ -1,0 +1,328 @@
+@charset "UTF-8";
+
+// Variables
+// Minimum width for submenus' items
+$subMenuItemWidth: 175px;
+
+// Base color theme
+$baseMenuBackground: $negro-light-80;
+
+// Secondary color (highlights, triangles...)
+$secondaryMenuBackground: $negro-light-60;
+
+// Proper menu items color
+$baseMenuColor: $negro-light-20;
+
+$menu_gutter: 1em;
+
+// Base gutter
+$menu_input: "input[type=checkbox]";
+
+// Checkbox hack selector
+
+// Menu background mixin
+@mixin menu-background($color, $menu-gradient: true) {
+  background-color: $color;
+  @if $menu-gradient == true {
+    @include background-image(linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)));
+  }
+  @else {
+    background-image: none;
+  }
+}
+
+// Menu background mixin
+// The $size argument specifies the actual size of the triangle
+// The $shift-left helps on horizontal positioning.
+@mixin pseudo-triangle($size, $shift-left) {
+  &:after {
+    content: '';
+    position: absolute;
+    left: $shift-left * $menu_gutter;
+    top: -$size * 2;
+    border: $size solid transparent;
+    border-bottom-color: inherit;
+  }
+}
+
+// Shortest clearfix. Ever. IE8+. 
+// http://www.css-101.org/articles/clearfix/latest-new-clearfix-so-far.php
+%cf:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+// Fix for Android
+// http://timpietrusky.com/advanced-checkbox-hack
+body {
+  -webkit-animation: bugfix infinite 1s;
+}
+
+@-webkit-keyframes bugfix {
+  from {
+    padding: 0;
+  }
+  to {
+    padding: 0;
+  }
+}
+
+
+// New box model, small reset, global stuff
+#menu-wrap {
+  font: bold 13px Arial, Helvetica;
+  * {
+    @include box-sizing(border-box);
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    @include border-radius(3px);
+  }
+  li {
+    position: relative;
+    &:hover {
+      > ul {
+        opacity: 1;
+        visibility: visible;
+        margin: 0;
+      }
+      > a {
+        color: lighten($baseMenuColor, 10%);
+      }
+    }
+  }
+  #{$menu_input} {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  label {
+    display: none;
+    cursor: pointer;
+    user-select: none;
+  }
+}
+
+// First level -> main menu items
+// <nav class='menu'>
+//    <ul></ul>
+//  </nav>
+#menu-wrap > ul {
+  border: 1px solid darken($baseMenuBackground, 5%);
+  @include menu-background($baseMenuBackground);
+  @include box-shadow(0 1px 0 rgba(255, 255, 255, 0.2) inset);
+  @extend %cf;
+  > li {
+    float: left;
+    border-right: 1px solid lighten($baseMenuBackground, 5%);
+    @include box-shadow(1px 0 0 lighten($baseMenuBackground, 20%));
+    &:hover {
+      @include menu-background($negro-light-60);
+    }
+    > a {
+      float: left;
+      padding: $menu_gutter 1 * $menu_gutter;
+    }
+  }
+  > li.float-right {
+    float: right;
+    border-right: 0 solid;
+    box-shadow: none;
+    &:hover {
+      background-image: none;
+      background-color: transparent;
+    }
+    input {
+      padding: $menu_gutter / 4;
+      margin: .5em .2em;
+    }
+  }
+  a {
+    color: $baseMenuColor;
+    text-decoration: none;
+    @include text-shadow(0 1px 0 $baseMenuBackground);
+  }
+  // Second level
+  // <nav class='menu'>
+  //    <ul>
+  //      <ul></ul>
+  //    </ul>
+  //  </nav>
+  ul {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+    opacity: 0;
+    visibility: hidden;
+    margin: 2 * $menu_gutter 0 0 0;
+    @include menu-background(lighten($baseMenuBackground, 15%), false);
+    @include transition-property(margin, opacity);
+    @include transition-duration(0.4s);
+    @include transition-timing-function(ease-in-out);
+    li {
+      display: block;
+      @include box-shadow(0 1px 0 lighten($baseMenuBackground, 5%), 0 2px 0 lighten($baseMenuBackground, 25%));
+      &:hover {
+        @include menu-background($negro-light-80);
+      }
+      &:first-child > a {
+        @include border-radius(3px 3px 0 0);
+        @include pseudo-triangle(6px, 4);
+      }
+      &:last-child {
+        @include box-shadow(none);
+        > a {
+          @include border-radius(0 0 3px 3px);
+        }
+      }
+    }
+    a {
+      padding: $menu_gutter;
+      width: $subMenuItemWidth;
+      display: block;
+      border-color: lighten($baseMenuBackground, 15%);
+    }
+  }
+}
+
+// Responsive stuff
+@media screen and (max-width: 950px) {
+  %revert-list {
+    visibility: visible;
+    opacity: 1;
+    display: none;
+  }
+  #menu-wrap {
+    #{$menu_input}:checked ~ label,
+    #{$menu_input} ~ label:hover {
+      color: $negro-light-20;
+    }
+    label {
+      border: 1px solid darken($baseMenuBackground, 5%);
+      @include menu-background($baseMenuBackground);
+      @include box-shadow(0 1px 0 rgba(255, 255, 255, 0.2) inset);
+      color: $negro-light-40;
+      @include text-shadow(0 1px 0 $baseMenuBackground);
+      @include border-radius(3px);
+      //text-transform: uppercase;
+      position: relative;
+      display: block;
+      padding: $menu_gutter / 2 3 * $menu_gutter;
+      line-height: $ms-lrg;
+      &:before {
+        position: absolute;
+        left: $menu_gutter / 2;
+        top: $menu_gutter / 3.5;
+        content: '\2261';
+        font-size: $ms-lrg;
+        font-weight: normal;
+      }
+    }
+    // First level -> main menu items
+    // <nav class='menu'>
+    //    <ul></ul>
+    //  </nav>
+    > ul {
+      position: relative;
+      border-color: $baseMenuBackground;
+      margin: $menu_gutter / 2 0 !important;
+      padding: $menu_gutter / 4;
+      @include clearfix;
+      @include box-shadow(none);
+      @include menu-background($baseMenuBackground, false);
+      @include pseudo-triangle(6px, 2);
+      @extend %revert-list;
+      li {
+        display: block;
+      }
+      > li {
+        float: none;
+        border: 0;
+        @include box-shadow(none);
+        @include menu-background($baseMenuBackground, false);
+        > a {
+          float: none;
+          display: block;
+          padding: $menu_gutter;
+        }
+      }
+      > li.float-right {
+        float: left;
+      }
+      // Second level
+      // <nav class='menu'>
+      //    <ul>
+      //      <ul></ul>
+      //    </ul>
+      //  </nav>
+      ul {
+        position: static;
+        @include border-radius(0);
+        @include menu-background(lighten($baseMenuBackground, 10%), false);
+        margin: 0;
+        @extend %revert-list;
+        @include transition-property("none");
+        li {
+          &:first-child > a {
+            @include border-radius(0);
+            &:after {
+              content: none;
+            }
+          }
+          &:last-child > a {
+            @include border-radius(0);
+          }
+        }
+        a {
+          padding-left: 2 * $menu_gutter;
+          display: block;
+          width: auto;
+        }
+      }
+      // end second level
+   
+    }
+    // end first level
+    // JOSE cambio para que en móvil no salgan todas las opciones desplegadas
+    // #{$menu_input}:checked {
+    //   ~ ul {
+    //     display: block;
+    //     ul {
+    //       display: block;
+    //     }
+    //   }
+    // }
+    #{$menu_input}:checked {
+      ~ ul {
+        display: block;
+        li:hover ul {
+          display: block;
+        }
+        ul {
+          display: none;
+        }
+      }
+    }
+    // end #{$menu_input}:checked
+ 
+  }
+  // end #menu-wrap
+}
+
+//end @media
+
+// Adjust menu when resizing [in this case].
+// To be updated depending of menu items length.
+@media screen and (max-width: 600px) {
+  #menu-wrap > ul {
+    > li {
+      > a {
+        padding: $menu_gutter 2 * $menu_gutter;
+      }
+    }
+  }
+}

@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+$bc-height: 1em;
+$bc-default-border-radius: 4px;
+
+$bc-inactive: #f0f0f0;
+$bc-inactive-dark: lightgray;
+$bc-inactive-text: #444444;
+$bc-inactive-sep: #999999;
+
+$bc-hover: #9999ee;
+$bc-hover-dark: #6666cc;
+$bc-hover-text: white;
+$bc-hover-sep: #777777;
+
+$bc-active: desaturate(darken($bc-hover, 10%), 10%);
+$bc-active-dark: desaturate(darken($bc-hover-dark, 10%), 10%);
+$bc-active-text: #eeeeee;
+$bc-active-sep: $bc-hover-sep;
+
+$bc-current-text: #666666;
+
+.breadcrumbs {
+  //border: 1px solid $bc-inactive-sep;
+  margin: 1em 0;
+  padding-left: 0;
+  li {
+    @include inline-list;
+  }
+  //@include border-radius;
+  //@include box-shadow(0 1px 3px rgba(0,0,0,0.5));
+  li:first-child {
+    a, span {
+      padding-left: 1em;
+      //@include border-left-radius;
+   
+    }
+    li:last-child {
+      a, span {
+        //@include border-right-radius;
+        &:after {
+          content: normal;
+        }
+      }
+    }
+  }
+  a, span {
+    color: $bc-inactive-text;
+    display: block;
+    float: left;
+    position: relative;
+    line-height: $bc-height;
+    padding: 0 1em;
+    text-decoration: none;
+    //@include text-shadow(0 1px 0 rgba(255, 255, 255, 0.7));
+    //@include background(linear-gradient(top, $bc-inactive, $bc-inactive-dark));
+    &:after {
+      content: '';
+      display: block;
+      z-index: 1;
+      @include box-sizing(border-box);
+      height: $bc-height;
+      width: $bc-height;
+      border: {
+        right: 2px solid $bc-inactive-sep;
+        top: 2px solid $bc-inactive-sep;
+      };
+      position: absolute;
+      right: 0;
+      top: 0;
+      //@include background(linear-gradient(left top, $bc-inactive, $bc-inactive-dark));
+      @include transform(translateX($bc-height / 2) rotate(45deg) scale(1 / sqrt(3)) skew(15deg, 15deg));
+    }
+    &:hover {
+      color: $bc-hover-text;
+      @include text-shadow(0 -1px 0 rgba(0, 0, 0, 0.5));
+      @include background(linear-gradient(top, $bc-hover, $bc-hover-dark));
+      &:after {
+        border-color: $bc-hover-sep;
+        @include background(linear-gradient(left top, $bc-hover, $bc-hover-dark));
+      }
+    }
+    &:active {
+      color: $bc-active-text;
+      @include background(linear-gradient(top, $bc-active, $bc-active-dark));
+      @include box-shadow(inset 0 0 3px rgba(0, 0, 0, 0.5));
+      &:after {
+        border-color: $bc-active-sep;
+        @include background(linear-gradient(left top, $bc-active, $bc-active-dark));
+        @include box-shadow(inset -2px 2px 3px rgba(0, 0, 0, 0.5));
+      }
+    }
+    &.current, &.current:hover, &.current:active {
+      background: inherit;
+      color: $bc-current-text;
+      @include text-shadow(0 1px 0 rgba(255, 255, 255, 0.7));
+      @include box-shadow(none);
+      @include border-right-radius;
+      &:after {
+        content: normal;
+      }
+    }
+  }
+}

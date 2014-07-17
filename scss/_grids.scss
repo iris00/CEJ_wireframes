@@ -1,0 +1,106 @@
+@charset "UTF-8";
+
+// $susy: (columns: 12, gutter-position: inside, debug: (image: show, output: overlay));
+
+// @include border-box-sizing;
+
+// body {
+//   @include container(1140px);
+// }
+
+// header {
+//   @include span(full);
+// }
+
+// article {
+//   @include span(full);
+//   header {
+//     @include span(full);
+//   }
+//   aside {
+//     @include breakpoint(941px) {
+//       @include span(3);
+//     }
+//   }
+//   section {
+//     @include breakpoint(941px) {
+//       @include span(6);
+//     }
+//   }
+//   footer {
+//     @include span(full);
+//   }
+// }
+
+// footer {
+//   @include span(full);
+// }
+
+// .collapsible li p {
+//   @include breakpoint(941px) {
+//     @include span(6 of 12);
+//   }
+// }
+
+// article > aside > ul button,
+// article > aside > ul img {
+//   @include span(6 of 12);
+//   @include breakpoint(941px) {
+//     @include span(full);
+//   }
+// }
+
+// 14 columnas para que se extiendan la cabecera y el pie permitiendo fondo que ocupe el 100% del navegador
+
+$susy: (columns: 14, gutter-position: inside, debug: (image: show, output: overlay));
+
+@include border-box-sizing;
+
+header {
+  background-color: red;
+}
+
+header, #content, footer {
+  @include span(full);
+  @include breakpoint(1110px) {
+    @include pad(1);
+  }
+}
+
+header > *, article {
+  @include container(1150px);
+}
+
+article {
+  aside {
+    @include breakpoint(951px) {
+      @include span(3 of 12);
+    }
+  }
+  section {
+    @include breakpoint(951px) {
+      @include span(6 of 12);
+    }
+  }
+  footer {
+    @include span(full);
+  }
+}
+
+.collapsible li p {
+  @include breakpoint(951px) {
+    @include span(6 of 12);
+  }
+}
+
+article > aside > ul button,
+article > aside > ul img {
+  @include span(6 of 12);
+  @include breakpoint(600px) {
+    @include span(4 of 12);
+  }
+
+  @include breakpoint(951px) {
+    @include span(full);
+  }
+}

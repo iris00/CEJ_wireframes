@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+/* Estilos del CEJ */
+
+@include sticky-footer(60px);
+
+body {
+  @include background($color-fondo);
+  color: $color-texto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: #666;
+}
+
+img {
+  max-width: 100%;
+}
+
+.float-right {
+  @include float-right;
+}
+
+.float-left {
+  @include float-left;
+}
+
+.text-right {
+  text-align: $text-right;
+}
+
+article > aside > ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 20px;
+  @include clearfix;
+  button, img {
+    margin: 0 0 .6em;
+    font-size: $ms-norm;
+  }
+}
+
+section + aside li {
+  margin-bottom: 20px;
+  p {
+    margin-top: 0;
+  }
+}
+
+footer {
+  list-style-type: none;
+  background-color: $negro-light-80;
+  ul {
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+    @include breakpoint(941px) {
+      width: 50%;
+    }
+
+    li {
+      display: inline;
+    }
+    a {
+      line-height: 60px;
+      padding: 0 10px;
+    }
+  }
+}

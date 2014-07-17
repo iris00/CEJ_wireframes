@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+/* COLOR */
+// Colores básicos
+$negro: rgba(0, 0, 0, 1);
+$blanco: rgba(255, 255, 255, 1);
+
+// Grises
+$negro-light-80: adjust-lightness($negro, 80%);
+$negro-light-60: adjust-lightness($negro, 60%);
+$negro-light-40: adjust-lightness($negro, 40%);
+$negro-light-20: adjust-lightness($negro, 20%);
+
+// Colores corporativos
+$color-principal: $negro-light-20;
+$color-secundario: $negro-light-40;
+$color-terciario: $negro-light-60;
+$color-cuaternario: $negro-light-80;
+
+// Colores texto y fondo
+$color-fondo: $blanco;
+$color-texto: $negro-light-40;
+
+/* GENERALES */
+$text-right: right;
+$text-left: left;
